@@ -1,0 +1,125 @@
+---
+title: "Introduction_to_binomial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction_to_binomial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(binomial)
+```
+
+#Binomial
+
+* The Binomial distribution: is perhaps hte most famous probability distribution among discrete random variables. This is the theoretical probability model that we use when calculating probabilites about the number of successes in a fixed number of random trials performed under identical conditionss (assuming a constant probability of success on each trial).
+
+* A classic example of a binomail random variable X involes the number of Heads (or Tails) that you get when tossing a coin n=> 0 times. Say you are interested in finding the probability of getting three heads in four tosses of a fair coin: P(X=3 heads in 4 tosses). To find the answer, we use the formula of the binomail probability:
+
+```{r}
+
+bin_distribution(10, 0.5)
+
+```
+
+#Mean and Variance
+
+* When X is a random variable that has a binomial distribution with n trials nad probability of success p, we write X~Bin(n,p). As with most random variables, it is useful to know about the various summary measures of X.
+
+* The expected value or mean of a binomial distribution is: np. This is the expected number of successes in n trials.
+
+* The variance is given by: np(1-p). Consequently, the standard deviation is simply the square root of the variance, that is: (npx(1-p))^0.5
+
+
+#Mode
+
+* For 0 < p < 1, the most likely number of success in n independent trilas with probability p of success on each trial is m, the greater integer less than or equal to np+P:
++ m = int(np+p)
+* where int dentoes thei nteger part function. If np+p is an integer, as in the case p = 0.5 and n odd, then there are two most likely numbers, and m-1. Otherwise, there is a unique mode.
+
+
+#Skewness and Kurtosis
+* Other two additional meauser are skewness and kurtosis. Skewness is a measure of the asymmetry of the probability distribution of a random variable about its mean. The skewness value can be positive or negative, or undefined. The skewness of a binomial random variable can be calculated as:
+  + skewness = (1-2p)/ (np x (1-p))^0.5
+* The Kurtosis (from gree kurtos, meaning 'curved, arching') is a measure of the 'tailedness' of the probability distribution of a random variable. In a similar way to the concept of skewness, kurtosis is a descriptor of the shape of a probability distribution. For a binomial random variable, its kurtosis can be obtained as:
+  + kurtosis = (1-6p x (1-p)) / np*(1-p)
+
+
+#Function bin_choose()
+
+* Bin choose caclulates the number of combinations in which ksuccesses can occur in n trials. Here is how the code should looke like for bin choose:
+
+```{r}
+
+bin_choose(10, 0.3)
+
+```
+
+#Function bin_probability()
+
+* This function should take three arguments: success, trials and probability. IT uses check_trials(), check_prob() and check_sucess() to check the avlidity of each argument. If any of the arugments is invalid, then bin_probability() should raise an error - trigerred by stop(). The code is the following:
+
+```{r}
+bin_probability(2, 10, 0.3)
+```
+
+#Function bin_distribution()
+* Main function bin_distribution() uses bin_probability()to create a dsitribution function. The function has two arguemnts, trials nad probability and returns a data frame with two classes, bindis and data.frame. The function returns a dataframe with probability distribution: successes in the first column and probability in the second column. The quotes is written as the following:
+```{r}
+
+bin_distribution(10, 0.3)
+
+bin1 <- bin_distribution(10, 0.3)
+plot(bin1)
+```
+
+#Function bin_cumulative()
+* This function should have two arguments trials, and prob. The returned output should be a data frame with two classes:, bincum and data frame. In other words, the primary class is "bincum" indicating that this is an object of class binomial cumulative distribution. Additionally, to keep this object as a data frame, we still need to include a class "data.frame". This function should return a data frame with both the probability distribution and the cumulative probabilities: success in the first column, probability in the second column, and cumulative in the  third column. To invoke bin_cumulative(), we write the following code:
+
+```{r}
+
+bin_cumulative(10, 0.3)
+
+dis2 <- bin_cumulative(10, 0.3)
+plot(dis2)
+```
+
+#Function bin_variable()
+* The binomial variable
+takes two arguemnts, trials and prob and should return an object of class "binvar", that is, a binomial random variable object.
+The function invokes check_trials() and check_prob() to ensure the validity of the trials and probability. The returned object should be a list with named elements:
+  + trials: number of trials
++ prob: probability of success
+* Because bin_variable() will return a object of class "binvar", you will also need to implement methods: print.binvar(), summary.binvar(), and print.summary.binvar()
+* The code is written as the following:
+```{r}
+
+bin_variable(10, 0.3)
+
+bin1 <- bin_variable(10, 0.3)
+print(bin1)
+bin1 <- bin_variable(10,0.3)
+binsum1 <- summary(bin1)
+```
+
+
+#Functions of measures:
+* Finally, there are also some main functions for each of the summary measures, such as bin_mean(), bin_variance(), etc. These main functions take two arguments, trials and prob. They use check_trials() to check that trials is valid and check_prob() to check that prob is valid. The auxiliary functions are invoked to do the corresponding calculation. These functions are invoked by the following codes:
+
+```{r}
+bin_variance(10, 0.2)
+bin_mean(10, 0.3)
+bin_mode(10, 0.2)
+bin_skewness(10, 0.2)
+bin_kurtosis(10, 0.2)
+```
+
+
